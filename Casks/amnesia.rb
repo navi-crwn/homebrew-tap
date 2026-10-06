@@ -1,6 +1,6 @@
 cask "amnesia" do
-  version "5.10"
-  sha256 "6b6b822a173b53e5281666a6c9ee7a5054b3e077359f3c87beee7bd36e810236"
+  version "5.10.1"
+  sha256 "f08e9f71091e94189976745b960dbd377ad05d7da1db818185d6f7ecdc584770"
 
   url "https://github.com/navi-crwn/amnesia-mac/releases/download/v#{version}/Amnesia-v#{version}.dmg"
   name "Amnesia"
