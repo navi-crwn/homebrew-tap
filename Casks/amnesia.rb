@@ -1,13 +1,13 @@
 cask "amnesia" do
   version "5.18.2"
-  sha256 "a0daf94082dfcc20056225a98a8282aca86ab5ff89035c7ee36d111659caa60b"
+  sha256 "1278220f4990c5b174a48ec5055dcad35d8dce2eb648ba928458b8b07a0c6a79"
 
   url "https://github.com/navi-crwn/amnesia/releases/download/v#{version}/Amnesia-v#{version}.dmg"
   name "Amnesia"
   desc "Wipes your Mac at every logout, except what you choose to keep"
   homepage "https://navi-crwn.github.io/amnesia/"
 
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
 
   app "Amnesia.app"
 
@@ -26,7 +26,7 @@ cask "amnesia" do
   caveats <<~EOS
     Amnesia really deletes data once you turn it on. Read the terms first:
       https://github.com/navi-crwn/amnesia/blob/main/TERMS.md
-    To uninstall: brew uninstall --cask amnesia (turns Amnesia off safely).
+    To uninstall: brew uninstall amnesia (turns Amnesia off safely).
     To also delete the vault and settings: bash ~/.amnesia/uninstall.sh --all
   EOS
 end
