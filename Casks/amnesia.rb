@@ -1,6 +1,6 @@
 cask "amnesia" do
-  version "5.18.2"
-  sha256 "1278220f4990c5b174a48ec5055dcad35d8dce2eb648ba928458b8b07a0c6a79"
+  version "5.19.1"
+  sha256 "c4ee0d5c898da8f9a38dea08274abf69cbb50704e17d2f95552abde4c205af3b"
 
   url "https://github.com/navi-crwn/amnesia/releases/download/v#{version}/Amnesia-v#{version}.dmg"
   name "Amnesia"
@@ -19,8 +19,8 @@ cask "amnesia" do
   }
 
   # Not signed by Apple yet: remove the download quarantine so the app opens.
-  postflight do
-    system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{appdir}/Amnesia.app"]
+  postflight_steps do
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/Amnesia.app"], must_succeed: false
   end
 
   caveats <<~EOS
