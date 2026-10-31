@@ -1,0 +1,53 @@
+name: Pages checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Validate introduction and local assets
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          import xml.etree.ElementTree as ET
+
+          root = Path('docs').resolve()
+          class Page(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.headings = 0
+                  self.product_links = 0
+
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  self.headings += tag == 'h1'
+                  href = attrs.get('href', '')
+                  if tag == 'a' and href == 'https://navi-crwn.github.io/amnesia/':
+                      self.product_links += 1
+                  for name in ('src', 'href'):
+                      value = attrs.get(name, '')
+                      url = urlsplit(value)
+                      if not value or url.scheme or url.netloc or value.startswith('#'):
+                          continue
+                      target = (root / url.path).resolve()
+                      assert target.is_relative_to(root), value
+                      assert target.exists(), value
+
+          page = Page()
+          page.feed((root / 'index.html').read_text())
+          assert page.headings == 1
+          assert page.product_links >= 2
+          assert (root / '.nojekyll').exists()
+          ET.parse(root / 'sitemap.xml')
+          print('Pages introduction, product links, assets and sitemap passed.')
+          PY
